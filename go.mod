@@ -1,4 +1,4 @@
-module github.com/pgzisis/url-shortener
+module github.com/pgzisis/url-shortener-go
 
 go 1.18
 

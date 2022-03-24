@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/pgzisis/url-shortener/urlshort"
+	"github.com/pgzisis/url-shortener-go/urlshort"
 )
 
 func main() {
