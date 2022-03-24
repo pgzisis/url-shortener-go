@@ -1,4 +1,4 @@
-## Url-shortener
+# Url-shortener
 
 A simple url proxy
 
