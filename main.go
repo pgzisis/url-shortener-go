@@ -10,8 +10,9 @@ import (
 )
 
 func main() {
-	yamlFileName := getYamlFileName()
-	yaml := readYaml(yamlFileName)
+	yamlFileName, jsonFileName := getFileNames()
+	yaml := readFile(yamlFileName)
+	json := readFile(jsonFileName)
 
 	mux := defaultMux()
 
@@ -25,24 +26,31 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Starting the server on :8080")
-	http.ListenAndServe(":8080", yamlHandler)
-}
 
-func getYamlFileName() *string {
-	yamlFileName := flag.String("yaml", "pathsToUrls.yaml", "name of the yaml file to read")
-	flag.Parse()
-
-	return yamlFileName
-}
-
-func readYaml(yamlFileName *string) []byte {
-	yaml, err := ioutil.ReadFile(*yamlFileName)
+	jsonHandler, err := urlshort.JSONHandler(json, yamlHandler)
 	if err != nil {
 		panic(err)
 	}
 
-	return yaml
+	fmt.Println("Starting the server on :8080")
+	http.ListenAndServe(":8080", jsonHandler)
+}
+
+func getFileNames() (*string, *string) {
+	yamlFileName := flag.String("yaml", "pathsToUrls.yaml", "yaml file to read")
+	jsonFileName := flag.String("json", "pathsToUrls.json", "json file to read")
+	flag.Parse()
+
+	return yamlFileName, jsonFileName
+}
+
+func readFile(fileName *string) []byte {
+	file, err := ioutil.ReadFile(*fileName)
+	if err != nil {
+		panic(err)
+	}
+
+	return file
 }
 
 func defaultMux() *http.ServeMux {
